@@ -7,8 +7,6 @@ var startDate;
 var monthlyRate;
 
 //==============================================
-
-
 function addEmployee (){
 	$("#addEmployee").on('click', function(){
 		console.log("I work!");
@@ -27,6 +25,7 @@ function addEmployee (){
 		});
 
 		$(".form-control").val("");
+		calculateMonths();
 		//Don't refresh page
 		return false;
 	})
@@ -37,15 +36,22 @@ dataRef.on("child_added", function(childSnapshot){
 		childSnapshot.val().name +'</td><td>' + 
 		childSnapshot.val().role + '</td><td>' + 
 		childSnapshot.val().startDate + '</td><td>' +
+		calculatedMonths + '</td><td>' +
 		childSnapshot.val().monthlyRate + '</td></tr>');
 })
 
 //===============================================
 
-
+function calculateMonths(){
+	var convertedDate = moment(new Date(startDate));
+	var calculatedMonths = moment().diff(moment(convertedDate), "months");
+	console.log(calculatedMonths);
+	dataRef.push(calculatedMonths)
+}
 
 
 //===============================================
 $(document).ready(function(){
 	addEmployee();
+	
 });
